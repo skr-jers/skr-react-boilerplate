@@ -1,19 +1,22 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractplugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js'
+        filename: 'main.js',
+        assetModuleFilename: 'assets/images/[hash][ext][query]'
     },
     resolve: {
         extensions: ['.js','.jsx'],
         alias: {
             '@components': path.resolve(__dirname, 'src/components'),
             '@styles': path.resolve(__dirname, 'src/styles'),
-            '@assets': path.resolve(__dirname, 'src/assets')
+            '@assets': path.resolve(__dirname, 'src/assets'),
+            '@images': path.resolve(__dirname, 'src/assets/images')
         }
     },
     mode: 'development',
@@ -38,6 +41,17 @@ module.exports = {
                     'style-loader',
                     'css-loader'
                 ]
+            },
+            {
+                test: /\.png$/,
+                type:'asset/resource'
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/fonts/[hash][ext]'
+                }
             }
         ]
     },
